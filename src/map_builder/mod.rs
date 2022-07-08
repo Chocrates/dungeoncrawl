@@ -181,6 +181,7 @@ pub fn display(
     map.tiles.iter().enumerate().for_each(|(idx, t)| match *t {
         TileType::Floor => output[idx] = '.',
         TileType::Wall => output[idx] = '#',
+        TileType::Exit => output[idx] = '>',
     });
 
     output[map.point2d_to_index(*player_start)] = '@';
