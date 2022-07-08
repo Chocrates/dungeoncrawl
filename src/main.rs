@@ -130,7 +130,7 @@ impl State {
         // spawn_amulet_of_yala(&mut self.ecs, map_builder.amulet_start);
         let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
         map_builder.map.tiles[exit_idx] = TileType::Exit;
-        self.build_game_state(&map_builder, &rng)
+        self.build_game_state(&map_builder, &rng);
     }
 
     fn advance_level(&mut self) {
@@ -182,15 +182,7 @@ impl State {
             let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
             map_builder.map.tiles[exit_idx] = TileType::Exit;
         }
-        self.build_game_state(&map_builder, &rng)
-        map_builder
-            .monster_spawns
-            .iter()
-            .for_each(|pos| spawn_entity(&mut self.ecs, &mut rng, *pos));
-        self.resources.insert(map_builder.map);
-        self.resources.insert(Camera::new(map_builder.player_start));
-        self.resources.insert(TurnState::AwaitingInput);
-        self.resources.insert(map_builder.theme);
+        self.build_game_state(&map_builder, &rng);
     }
 
     fn build_game_state(
