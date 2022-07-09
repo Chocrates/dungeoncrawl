@@ -45,10 +45,8 @@ impl State {
         // spawn_amulet_of_yala(&mut ecs, map_builder.amulet_start);
         let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
         map_builder.map.tiles[exit_idx] = TileType::Exit;
-        map_builder
-            .monster_spawns
-            .iter()
-            .for_each(|pos| spawn_entity(&mut ecs, &mut rng, *pos));
+
+        spawn_level(&mut ecs, &mut rng, 0, &map_builder.monster_spawns);
 
         display(
             "Final Map",
@@ -130,7 +128,7 @@ impl State {
         // spawn_amulet_of_yala(&mut self.ecs, map_builder.amulet_start);
         let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
         map_builder.map.tiles[exit_idx] = TileType::Exit;
-        self.build_game_state(map_builder, &mut rng);
+        self.build_game_state(map_builder, &mut rng, 0);
     }
 
     fn advance_level(&mut self) {
@@ -182,18 +180,16 @@ impl State {
             let exit_idx = map_builder.map.point2d_to_index(map_builder.amulet_start);
             map_builder.map.tiles[exit_idx] = TileType::Exit;
         }
-        self.build_game_state(map_builder, &mut rng);
+        self.build_game_state(map_builder, &mut rng, map_level as usize);
     }
 
     fn build_game_state(
         &mut self,
         map_builder: map_builder::MapBuilder,
-        rng: &mut RandomNumberGenerator,
+        mut rng: &mut RandomNumberGenerator,
+        level: usize,
     ) {
-        map_builder
-            .monster_spawns
-            .iter()
-            .for_each(|pos| spawn_entity(&mut self.ecs, rng, *pos));
+        spawn_level(&mut self.ecs, &mut rng, level, &map_builder.monster_spawns);
 
         self.resources.insert(map_builder.map);
         self.resources.insert(Camera::new(map_builder.player_start));
